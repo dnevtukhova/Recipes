@@ -10,3 +10,13 @@ https://spoonacular.com/food-api
 - Поиск рецептов по параметрам
 - Детальный экран рецепта
 - Список избранных рецептов
+
+Стек технологий:
+Kotlin + Coroutines 
+Retrofit 
+Jetpack:
+       Navigation -  под вопросом
+       LiveData
+       ViewModel
+MVVM
+Room 
