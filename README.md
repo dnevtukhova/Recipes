@@ -12,11 +12,11 @@ https://spoonacular.com/food-api
 - Список избранных рецептов
 
 Стек технологий:
-Kotlin + Coroutines 
-Retrofit 
-Jetpack:
-       Navigation -  под вопросом
-       LiveData
-       ViewModel
-MVVM
-Room 
+ - Kotlin + Coroutines 
+ - Retrofit 
+ - Jetpack:
+      - Navigation -  под вопросом
+      - LiveData
+      - ViewModel
+- MVVM
+- Room 
