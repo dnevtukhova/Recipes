@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Recipes</string>
+    <string name="error">Oops, что-то пошло не так</string>
 </resources>
