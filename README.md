@@ -20,3 +20,4 @@ https://spoonacular.com/food-api
       - ViewModel
 - MVVM
 - Room 
+- Dagger2
