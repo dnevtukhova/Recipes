@@ -5,5 +5,5 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class RecipesList (
-    @SerializedName("recipes")val  recipes: MutableList<Recipe>
+    @SerializedName("recipes")val  recipes: List<Recipe>
 ): Parcelable

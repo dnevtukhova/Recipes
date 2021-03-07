@@ -3,8 +3,9 @@ package com.dnevtukhova.recipes.domain
 import com.dnevtukhova.recipes.data.api.NetworkConstants.API_KEY
 import com.dnevtukhova.recipes.data.api.Recipe
 import com.dnevtukhova.recipes.data.api.ServerApi
+import javax.inject.Inject
 
-class RecipesInteractor constructor(private val api: ServerApi) {
+class RecipesInteractor @Inject constructor(private val api: ServerApi) {
     sealed class Result {
         data class Success(val data: List<Recipe>) : Result()
         data class Error(val error: Throwable) : Result()

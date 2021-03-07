@@ -41,6 +41,7 @@ class RecipesListAdapter(private val inflater: LayoutInflater) :
             Glide.with(itemView.context)
                 .load(recipe.image)
                 .centerCrop()
+                .placeholder(R.drawable.ic_twotone_room_service_24)
                 .into(recipeImage)
         }
     }

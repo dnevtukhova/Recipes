@@ -1,15 +1,21 @@
 package com.dnevtukhova.recipes.presentation
+
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.dnevtukhova.recipes.App
 import com.dnevtukhova.recipes.R
+import kotlinx.android.synthetic.main.all_recipes_fragment.*
 import kotlinx.android.synthetic.main.all_recipes_fragment.view.*
+import javax.inject.Inject
 
 class AllRecipesListFragment : Fragment() {
     companion object {
@@ -18,8 +24,18 @@ class AllRecipesListFragment : Fragment() {
 
     lateinit var recipesAdapter: RecipesListAdapter
 
-    private val recipesViewModel by viewModels<RecipesViewModel> {
-        RecipesListViewModelFactory(App.instance.recipesInteractor)
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val recipesViewModel: RecipesViewModel
+            by viewModels {
+                viewModelFactory
+            }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as MainActivity).recipesComponent.inject(this)
+
     }
 
     override fun onCreateView(
@@ -37,7 +53,23 @@ class AllRecipesListFragment : Fragment() {
             recipesAdapter.setItems(it)
         }
         recipesViewModel.getPopularRecipesList()
+        recipesViewModel.error.observe(this.viewLifecycleOwner) { error ->
+            Toast.makeText(context, getString(error), Toast.LENGTH_LONG).show()
+        }
+        recipesViewModel.progress.observe(this.viewLifecycleOwner) {
+            if (progress_all_recipes != null) {
+                if (it) {
+                    progress_all_recipes.isVisible = true
+                } else {
+                    progress_all_recipes.isGone = true
+                }
+            }
+        }
 
+        swipeRefreshLayout.setOnRefreshListener {
+            recipesViewModel.getPopularRecipesList()
+            swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun initRecycler(view: View) {

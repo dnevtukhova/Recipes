@@ -1,48 +1,22 @@
 package com.dnevtukhova.recipes
 
 import android.app.Application
-import com.dnevtukhova.recipes.data.api.NetworkConstants.BASE_URL
-import com.dnevtukhova.recipes.data.api.ServerApi
-import com.dnevtukhova.recipes.domain.RecipesInteractor
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.dnevtukhova.recipes.di.AppComponent
 
-class App: Application() {
+open class App : Application() {
+
     companion object {
-        lateinit var instance: App
-            private set
+        private var appComponent: AppComponent? = null
     }
-
-    lateinit var recipesInteractor: RecipesInteractor
-    lateinit var api: ServerApi
 
     override fun onCreate() {
         super.onCreate()
-       instance = this
-        api = initRetrofit()
-        recipesInteractor = RecipesInteractor(api)
-
+        getAppComponent().inject(this)
     }
 
-    private fun initRetrofit(): ServerApi {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(
-                OkHttpClient.Builder()
-                    .addInterceptor(
-                        HttpLoggingInterceptor()
-                            .apply {
-                                if (BuildConfig.DEBUG) {
-                                    level = HttpLoggingInterceptor.Level.BODY
-                                }
-                            })
-                    .build()
-            )
-            .addConverterFactory(GsonConverterFactory.create())
-
-            .build()
-            .create(ServerApi::class.java)
+    open fun getAppComponent(): AppComponent {
+        return appComponent ?: AppComponent.create().also {
+            appComponent = it
+        }
     }
 }

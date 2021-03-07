@@ -2,11 +2,13 @@ package com.dnevtukhova.recipes.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dnevtukhova.recipes.domain.RecipesInteractor
+import javax.inject.Inject
+import javax.inject.Provider
 
-class RecipesListViewModelFactory(private val recipesInteractor: RecipesInteractor): ViewModelProvider.Factory {
+class RecipesListViewModelFactory @Inject constructor(private val provider: Provider<RecipesViewModel>) :
+    ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return modelClass.getConstructor(RecipesInteractor::class.java)
-            .newInstance(recipesInteractor)
+        return provider.get() as T
     }
 }
