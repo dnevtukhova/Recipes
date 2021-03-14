@@ -8,7 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.dnevtukhova.recipes.R
 import com.dnevtukhova.recipes.data.api.Recipe
 import com.dnevtukhova.recipes.domain.RecipesInteractor
+import com.dnevtukhova.recipes.domain.State
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,19 +33,22 @@ class RecipesViewModel @Inject constructor(private val interactor: RecipesIntera
         get() = progressLiveData
 
     fun getPopularRecipesList() {
-        progressLiveData.postValue(true)
+
         viewModelScope.launch(Dispatchers.IO) {
-            interactor.getPopularRecipesList().also { result ->
-                if (result is RecipesInteractor.Result.Success) {
+            interactor.getPopularRecipesList().onEach{ result ->
+                if(result is State.Loading) {
+                    progressLiveData.postValue(true)
+                }
+                if (result is State.Success) {
                     Log.d(TAG, result.data.toString())
                     progressLiveData.postValue(false)
                     popularRecipesListLiveData.postValue(result.data)
                 }
-                if (result is RecipesInteractor.Result.Error) {
+                if (result is State.Error) {
                     errorLiveData.postValue(R.string.error)
                     Log.d(TAG, result.error.stackTraceToString())
                 }
-            }
+            }.launchIn(viewModelScope)
         }
     }
 }
