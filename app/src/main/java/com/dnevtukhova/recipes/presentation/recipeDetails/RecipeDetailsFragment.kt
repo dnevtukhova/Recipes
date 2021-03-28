@@ -1,11 +1,14 @@
 package com.dnevtukhova.recipes.presentation.recipeDetails
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.dnevtukhova.recipes.App
 import com.dnevtukhova.recipes.R
+import com.dnevtukhova.recipes.di.RecipeDetailsComponent
 
 class RecipeDetailsFragment : Fragment() {
     companion object {
@@ -24,5 +27,11 @@ class RecipeDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        RecipeDetailsComponent.create((requireActivity().application as App).getAppComponent())
+       RecipeDetailsComponent.injectFragment(this)
     }
 }

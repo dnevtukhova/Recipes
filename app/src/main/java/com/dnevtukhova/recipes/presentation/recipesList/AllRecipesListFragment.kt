@@ -12,8 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.dnevtukhova.recipes.App
 import com.dnevtukhova.recipes.data.api.Recipe
 import com.dnevtukhova.recipes.databinding.AllRecipesFragmentBinding
+import com.dnevtukhova.recipes.di.AllRecipesComponent
 import com.dnevtukhova.recipes.presentation.MainActivity
 import javax.inject.Inject
 
@@ -27,7 +29,8 @@ class AllRecipesListFragment : Fragment() {
 
     }
     private lateinit var binding: AllRecipesFragmentBinding
-    lateinit var recipesAdapter: RecipesListAdapter
+    private lateinit var recipesAdapter: RecipesListAdapter
+
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -39,8 +42,8 @@ class AllRecipesListFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (activity as MainActivity).recipesComponent.inject(this)
-
+       AllRecipesComponent.create((requireActivity().application as App).getAppComponent())
+        AllRecipesComponent.injectFragment(this)
     }
 
     override fun onCreateView(
