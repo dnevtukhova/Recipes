@@ -1,8 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -31,6 +31,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+     buildFeatures {
+        viewBinding true
     }
 }
 
@@ -66,4 +69,13 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glide_version"
 
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+//dagger2
+    implementation "com.google.dagger:dagger:$dagger2_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger2_version"
+
+    //cicerone
+    implementation "com.github.terrakok:cicerone:$cicerone_version"
+
+
 }
