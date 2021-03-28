@@ -2,7 +2,7 @@ package com.dnevtukhova.recipes.di
 
 import androidx.lifecycle.ViewModelProvider
 import com.dnevtukhova.recipes.data.api.ServerApi
-import com.dnevtukhova.recipes.presentation.RecipesListViewModelFactory
+import com.dnevtukhova.recipes.presentation.recipesList.RecipesListViewModelFactory
 import dagger.*
 import retrofit2.Retrofit
 
@@ -21,5 +21,5 @@ abstract class RecipesModule {
 
     @Binds
     @ActivityScope
-    abstract fun getViewModelFactory(recipesListfactory: RecipesListViewModelFactory): ViewModelProvider.Factory
+    abstract fun getViewModelFactory(recipesListFactory: RecipesListViewModelFactory): ViewModelProvider.Factory
 }

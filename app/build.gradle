@@ -70,4 +70,8 @@ dependencies {
 //dagger2
     implementation "com.google.dagger:dagger:$dagger2_version"
     kapt "com.google.dagger:dagger-compiler:$dagger2_version"
+
+    //cicerone
+    implementation "com.github.terrakok:cicerone:$cicerone_version"
+
 }

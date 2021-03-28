@@ -1,4 +1,4 @@
-package com.dnevtukhova.recipes.presentation
+package com.dnevtukhova.recipes.presentation.recipesList
 
 import android.content.Context
 import android.os.Bundle
@@ -13,6 +13,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dnevtukhova.recipes.R
+import com.dnevtukhova.recipes.data.api.Recipe
+import com.dnevtukhova.recipes.presentation.MainActivity
 import kotlinx.android.synthetic.main.all_recipes_fragment.*
 import kotlinx.android.synthetic.main.all_recipes_fragment.view.*
 import javax.inject.Inject
@@ -20,6 +22,11 @@ import javax.inject.Inject
 class AllRecipesListFragment : Fragment() {
     companion object {
         const val TAG = "AllRecipesListFragment"
+
+            fun getNewInstance(): AllRecipesListFragment {
+                return AllRecipesListFragment()
+            }
+
     }
 
     lateinit var recipesAdapter: RecipesListAdapter
@@ -76,7 +83,11 @@ class AllRecipesListFragment : Fragment() {
         val recycler = view.recycler_view_recipes_list
         val layoutManager = GridLayoutManager(context, 1)
         recycler.layoutManager = layoutManager
-        recipesAdapter = RecipesListAdapter(LayoutInflater.from(context))
+        recipesAdapter = RecipesListAdapter(LayoutInflater.from(context), object: RecipesListAdapter.OnRecipeClickListener {
+            override fun onRecipeClick(item: Recipe) {
+                recipesViewModel.openDetailRecipeFragment()
+            }
+        })
         recycler.adapter = recipesAdapter
     }
 }

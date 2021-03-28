@@ -32,4 +32,5 @@ ext {
     fragmentKtxVersion = "1.3.0-rc01"
     glide_version = "4.11.0"
     dagger2_version = "2.33"
+    cicerone_version = "6.6"
 }

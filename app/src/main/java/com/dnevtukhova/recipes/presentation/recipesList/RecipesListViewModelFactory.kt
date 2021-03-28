@@ -1,4 +1,4 @@
-package com.dnevtukhova.recipes.presentation
+package com.dnevtukhova.recipes.presentation.recipesList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -11,4 +11,5 @@ class RecipesListViewModelFactory @Inject constructor(private val provider: Prov
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return provider.get() as T
     }
+
 }
