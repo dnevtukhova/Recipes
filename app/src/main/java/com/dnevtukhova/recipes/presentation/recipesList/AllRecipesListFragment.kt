@@ -12,11 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.dnevtukhova.recipes.R
 import com.dnevtukhova.recipes.data.api.Recipe
+import com.dnevtukhova.recipes.databinding.AllRecipesFragmentBinding
 import com.dnevtukhova.recipes.presentation.MainActivity
-import kotlinx.android.synthetic.main.all_recipes_fragment.*
-import kotlinx.android.synthetic.main.all_recipes_fragment.view.*
 import javax.inject.Inject
 
 class AllRecipesListFragment : Fragment() {
@@ -28,7 +26,7 @@ class AllRecipesListFragment : Fragment() {
             }
 
     }
-
+    private lateinit var binding: AllRecipesFragmentBinding
     lateinit var recipesAdapter: RecipesListAdapter
 
     @Inject
@@ -50,7 +48,9 @@ class AllRecipesListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.all_recipes_fragment, container, false)
+        binding = AllRecipesFragmentBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,31 +59,31 @@ class AllRecipesListFragment : Fragment() {
         recipesViewModel.recipesList.observe(this.viewLifecycleOwner) {
             recipesAdapter.setItems(it)
         }
-        recipesViewModel.getPopularRecipesList()
+
         recipesViewModel.error.observe(this.viewLifecycleOwner) { error ->
             Toast.makeText(context, getString(error), Toast.LENGTH_LONG).show()
         }
         recipesViewModel.progress.observe(this.viewLifecycleOwner) {
-            if (progress_all_recipes != null) {
+            if (binding.progressAllRecipes != null) {
                 if (it) {
-                    progress_all_recipes.isVisible = true
+                    binding.progressAllRecipes.isVisible = true
                 } else {
-                    progress_all_recipes.isGone = true
+                    binding.progressAllRecipes.isGone = true
                 }
             }
         }
 
-        swipeRefreshLayout.setOnRefreshListener {
+        binding.swipeRefreshLayout.setOnRefreshListener {
             recipesViewModel.getPopularRecipesList()
-            swipeRefreshLayout.isRefreshing = false
+            binding.swipeRefreshLayout.isRefreshing = false
         }
     }
 
     private fun initRecycler(view: View) {
-        val recycler = view.recycler_view_recipes_list
+        val recycler = binding.recyclerViewRecipesList
         val layoutManager = GridLayoutManager(context, 1)
         recycler.layoutManager = layoutManager
-        recipesAdapter = RecipesListAdapter(LayoutInflater.from(context), object: RecipesListAdapter.OnRecipeClickListener {
+        recipesAdapter = RecipesListAdapter(object: RecipesListAdapter.OnRecipeClickListener {
             override fun onRecipeClick(item: Recipe) {
                 recipesViewModel.openDetailRecipeFragment()
             }

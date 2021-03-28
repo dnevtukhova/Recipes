@@ -22,6 +22,10 @@ class RecipesViewModel @Inject constructor(private val interactor: RecipesIntera
         const val TAG = "RecipesViewModel"
     }
 
+    init {
+        getPopularRecipesList()
+    }
+
     private val popularRecipesListLiveData = MutableLiveData<List<Recipe>>()
     private val errorLiveData = MutableLiveData<Int>()
     private val progressLiveData = MutableLiveData<Boolean>()

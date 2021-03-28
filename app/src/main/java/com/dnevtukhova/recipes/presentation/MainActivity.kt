@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         recipesComponent = RecipesComponent.create((application as App).getAppComponent())
         recipesComponent.inject(this)
-        router.navigateTo(AllRecipes())
+        router.replaceScreen(AllRecipes())
 
     }
 
