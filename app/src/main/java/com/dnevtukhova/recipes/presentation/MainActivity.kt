@@ -14,8 +14,6 @@ import com.github.terrakok.cicerone.androidx.AppNavigator
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
-    lateinit var mainComponent: MainComponent
-
     @Inject
     lateinit var navigatorHolder: NavigatorHolder
 
@@ -28,8 +26,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-        mainComponent = MainComponent.create((application as App).getAppComponent())
-        mainComponent.inject(this)
+        MainComponent.injectActivity(this)
         router.replaceScreen(AllRecipes())
 
     }

@@ -12,11 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.dnevtukhova.recipes.App
 import com.dnevtukhova.recipes.data.api.Recipe
 import com.dnevtukhova.recipes.databinding.AllRecipesFragmentBinding
 import com.dnevtukhova.recipes.di.AllRecipesComponent
-import com.dnevtukhova.recipes.presentation.MainActivity
 import javax.inject.Inject
 
 class AllRecipesListFragment : Fragment() {
@@ -42,7 +40,6 @@ class AllRecipesListFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-       AllRecipesComponent.create((requireActivity().application as App).getAppComponent())
         AllRecipesComponent.injectFragment(this)
     }
 
@@ -58,7 +55,7 @@ class AllRecipesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecycler(view)
+        initRecycler()
         recipesViewModel.recipesList.observe(this.viewLifecycleOwner) {
             recipesAdapter.setItems(it)
         }
@@ -82,7 +79,7 @@ class AllRecipesListFragment : Fragment() {
         }
     }
 
-    private fun initRecycler(view: View) {
+    private fun initRecycler() {
         val recycler = binding.recyclerViewRecipesList
         val layoutManager = GridLayoutManager(context, 1)
         recycler.layoutManager = layoutManager
