@@ -5,7 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dnevtukhova.recipes.App
 import com.dnevtukhova.recipes.R
 import com.dnevtukhova.recipes.Screens.AllRecipes
-import com.dnevtukhova.recipes.di.RecipesComponent
+import com.dnevtukhova.recipes.di.AllRecipesComponent
+import com.dnevtukhova.recipes.di.MainComponent
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
@@ -13,8 +14,6 @@ import com.github.terrakok.cicerone.androidx.AppNavigator
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
-    lateinit var recipesComponent: RecipesComponent
-
     @Inject
     lateinit var navigatorHolder: NavigatorHolder
 
@@ -27,8 +26,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-        recipesComponent = RecipesComponent.create((application as App).getAppComponent())
-        recipesComponent.inject(this)
+        MainComponent.injectActivity(this)
         router.replaceScreen(AllRecipes())
 
     }
