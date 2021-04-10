@@ -1,29 +1,34 @@
 package com.dnevtukhova.recipes.di
 
-import com.dnevtukhova.recipes.App
-import com.github.terrakok.cicerone.NavigatorHolder
-import com.github.terrakok.cicerone.Router
+import android.app.Application
+import android.content.Context
+import com.dnevtukhova.core_api.AppProvider
+import dagger.BindsInstance
 import dagger.Component
-import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Singleton
-@Component(
-    modules = [NetworkModule::class,
-        NavigationModule::class]
-)
-interface AppComponent {
+@Component()
+interface AppComponent : AppProvider {
     companion object {
-        fun create(): AppComponent {
-            return DaggerAppComponent.create()
+        private var appComponent: AppProvider? = null
+
+        fun create(application: Application): AppProvider {
+            return appComponent ?: DaggerAppComponent
+                .builder()
+                .application(application.applicationContext)
+                .build().also {
+                    appComponent = it
+                }
         }
     }
 
-    fun provideRetrofit(): Retrofit
+    @Component.Builder
+    interface Builder {
 
-    fun provideRouter(): Router
+        @BindsInstance
+        fun application(context: Context): Builder
 
-    fun provideNavigatorHolder(): NavigatorHolder
-
-    fun inject(app: App)
+        fun build(): AppComponent
+    }
 }
