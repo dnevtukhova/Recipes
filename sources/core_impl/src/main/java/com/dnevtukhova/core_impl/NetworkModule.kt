@@ -1,8 +1,6 @@
 package com.dnevtukhova.core_impl
 
 
-import com.dnevtukhova.core_api.network.ServerApi
-import com.dnevtukhova.core_api.network.ServerApiProvider
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -42,11 +40,5 @@ class NetworkModule {
     @Singleton
     fun provideRetrofitBuilder(): Retrofit.Builder {
         return Retrofit.Builder()
-    }
-
-    @Provides
-    @Singleton
-    fun provideServerApi(serverApiProvider: ServerApiProvider): ServerApi {
-        return serverApiProvider.serverApi()
     }
 }

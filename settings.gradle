@@ -1,3 +1,4 @@
+include ':sources:ui_core'
 include ':app',  ':sources:recipeDetails', ':sources:recipesList', ':sources:main', ':sources:core_impl',
         ':sources:core_api', ':sources:core'
 rootProject.name = "Recipes"

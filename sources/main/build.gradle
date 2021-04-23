@@ -63,4 +63,5 @@ dependencies {
     implementation "androidx.activity:activity-ktx:1.2.2"
 
     implementation project(':sources:core_api')
+    implementation project(':sources:ui_core')
 }

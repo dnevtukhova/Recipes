@@ -77,5 +77,6 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor_version"
     implementation project(':sources:core_api')
+    implementation project(':sources:ui_core')
 
 }

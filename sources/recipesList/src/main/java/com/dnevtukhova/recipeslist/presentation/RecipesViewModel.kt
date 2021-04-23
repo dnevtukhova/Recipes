@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dnevtukhova.core_api.dto.Recipe
 import com.dnevtukhova.core_api.mediators.RecipeDetailsMediator
 import com.dnevtukhova.recipeslist.R
 import com.dnevtukhova.recipeslist.domain.RecipesInteractor
@@ -55,8 +56,8 @@ class RecipesViewModel @Inject constructor(private val interactor: RecipesIntera
             }.launchIn(viewModelScope)
         }
     }
-    fun openDetailRecipeFragment() {
-        router.navigateTo(recipeDetailsMediator.startRecipeDetailsFragment())
+    fun openDetailRecipeFragment(recipe: Recipe) {
+        router.navigateTo(recipeDetailsMediator.startRecipeDetailsFragment(recipe))
     }
 
 }

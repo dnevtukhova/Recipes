@@ -55,8 +55,7 @@ class AllRecipesListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = AllRecipesFragmentBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,7 +90,7 @@ class AllRecipesListFragment : Fragment() {
         recycler.layoutManager = layoutManager
         recipesAdapter = RecipesListAdapter(object : RecipesListAdapter.OnRecipeClickListener {
             override fun onRecipeClick(item: Recipe) {
-                recipesViewModel.openDetailRecipeFragment()
+                recipesViewModel.openDetailRecipeFragment(item)
             }
         })
         recycler.adapter = recipesAdapter
