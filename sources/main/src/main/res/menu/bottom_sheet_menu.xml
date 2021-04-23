@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/all_recipes"
+        android:icon="@drawable/ic_baseline_home_24"
+        app:showAsAction="ifRoom"
+        android:title="@string/recipes"/>
+    <item
+        android:id="@+id/recipes_favorite"
+        android:icon="@drawable/ic_baseline_favorite_border_24"
+        app:showAsAction="ifRoom"
+        android:title="@string/favorite" />
+    <item
+        android:id="@+id/recipes_categories"
+        android:icon="@drawable/ic_baseline_categories_24"
+        app:showAsAction="ifRoom"
+        android:title="@string/category"/>
+</menu>

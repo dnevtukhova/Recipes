@@ -1,22 +1,23 @@
 package com.dnevtukhova.recipes
 
 import android.app.Application
-import com.dnevtukhova.recipes.di.AppComponent
+import com.dnevtukhova.core_api.AppWithFacade
+import com.dnevtukhova.core_api.ProvidersFacade
+import com.dnevtukhova.recipes.di.FacadeComponent
 
-open class App : Application() {
-
+open class App : Application(), AppWithFacade {
     companion object {
-        private var appComponent: AppComponent? = null
+        private var facadeComponent: FacadeComponent? = null
+    }
+
+    override fun getFacade(): ProvidersFacade {
+        return facadeComponent ?: FacadeComponent.init(this).also {
+            facadeComponent = it
+        }
     }
 
     override fun onCreate() {
         super.onCreate()
-        getAppComponent().inject(this)
-    }
-
-    open fun getAppComponent(): AppComponent {
-        return appComponent ?: AppComponent.create().also {
-            appComponent = it
-        }
+        (getFacade() as FacadeComponent).inject(this)
     }
 }
