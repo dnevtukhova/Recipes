@@ -27,12 +27,10 @@ class AllRecipesListFragment : Fragment() {
         fun getNewInstance(): AllRecipesListFragment {
             return AllRecipesListFragment()
         }
-
     }
 
     private lateinit var binding: AllRecipesFragmentBinding
     private lateinit var recipesAdapter: RecipesListAdapter
-
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error">Oops, something went wrong</string>
+    <string name="daily_percent">Covered percent of daily need</string>
+    <string name="calories">Calories</string>
+    <string name="protein">Protein</string>
+    <string name="total_fat">Total Fat</string>
+    <string name="carbs">Carbs</string>
+</resources>
