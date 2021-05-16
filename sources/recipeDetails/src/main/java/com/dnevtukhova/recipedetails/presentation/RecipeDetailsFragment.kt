@@ -72,6 +72,9 @@ class RecipeDetailsFragment : Fragment() {
         binding.title.text = recipe.title
         binding.readyInMinutesText.text = recipe.readyInMinutes + " min"
         binding.servingsText.text = recipe.servings + " servings"
+        if(recipe.checked ==1) {
+            binding.like.isChecked = true
+        }
 
         Glide.with(binding.imageRecipe.context)
             .load(recipe.image)
@@ -102,6 +105,14 @@ class RecipeDetailsFragment : Fragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
         })
+        binding.like.setOnClickListener {
+            if (binding.like.isChecked) {
+                recipe.checked = 1
+            } else {
+                recipe.checked = 0
+            }
+            recipesViewModel.insertRecipeinDB(recipe)
+        }
 
         initObservers()
     }

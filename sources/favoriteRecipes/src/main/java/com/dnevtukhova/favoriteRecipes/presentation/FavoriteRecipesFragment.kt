@@ -1,4 +1,4 @@
-package com.dnevtukhova.recipeslist.presentation
+package com.dnevtukhova.favoriteRecipes.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,40 +9,35 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.dnevtukhova.core_api.AppWithFacade
 import com.dnevtukhova.core_api.dto.Recipe
-
-
-import com.dnevtukhova.recipeslist.databinding.AllRecipesFragmentBinding
-import com.dnevtukhova.recipeslist.di.AllRecipesComponent
+import com.dnevtukhova.favoriteRecipes.databinding.FavoriteRecipeFragmentBinding
+import com.dnevtukhova.favoriteRecipes.di.FavoriteRecipesComponent
 import javax.inject.Inject
 
-class AllRecipesListFragment : Fragment() {
+class FavoriteRecipesFragment : Fragment() {
     companion object {
-        const val TAG = "AllRecipesListFragment"
-
-        fun getNewInstance(): AllRecipesListFragment {
-            return AllRecipesListFragment()
+        fun getNewInstance(): FavoriteRecipesFragment {
+            return FavoriteRecipesFragment()
         }
     }
 
-    private lateinit var binding: AllRecipesFragmentBinding
-    private lateinit var recipesAdapter: RecipesListAdapter
+    private lateinit var binding: FavoriteRecipeFragmentBinding
+    private lateinit var recipesAdapter: FavoriteRecipesListAdapter
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val recipesViewModel: RecipesViewModel
+    private val favoriteRecipesViewModel: FavoriteRecipesViewModel
             by viewModels {
                 viewModelFactory
             }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AllRecipesComponent.create((requireActivity().application as AppWithFacade).getFacade())
+        FavoriteRecipesComponent.create((requireActivity().application as AppWithFacade).getFacade())
             .inject(this)
         setHasOptionsMenu(true)
     }
@@ -52,7 +47,7 @@ class AllRecipesListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = AllRecipesFragmentBinding.inflate(inflater, container, false)
+        binding = FavoriteRecipeFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -60,22 +55,22 @@ class AllRecipesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initRecycler()
         initObservers()
-
+        favoriteRecipesViewModel.getFavoriteRecipesList()
         binding.swipeRefreshLayout.setOnRefreshListener {
-            recipesViewModel.getPopularRecipesList()
+            favoriteRecipesViewModel.getFavoriteRecipesList()
             binding.swipeRefreshLayout.isRefreshing = false
         }
     }
 
     private fun initObservers() {
-        recipesViewModel.recipesList.observe(this.viewLifecycleOwner) {
+        favoriteRecipesViewModel.favoriteRecipesList.observe(this.viewLifecycleOwner) {
             recipesAdapter.setItems(it)
         }
 
-        recipesViewModel.error.observe(this.viewLifecycleOwner) { error ->
+        favoriteRecipesViewModel.error.observe(this.viewLifecycleOwner) { error ->
             Toast.makeText(context, getString(error), Toast.LENGTH_LONG).show()
         }
-        recipesViewModel.progress.observe(this.viewLifecycleOwner) {
+        favoriteRecipesViewModel.progress.observe(this.viewLifecycleOwner) {
             if (binding.progressAnimationView != null) {
                 if (it) {
                     binding.progressAnimationView.isVisible = true
@@ -84,27 +79,23 @@ class AllRecipesListFragment : Fragment() {
                 }
             }
         }
-
     }
 
     private fun initRecycler() {
-        val recycler = binding.recyclerViewRecipesList
+        val recycler = binding.recyclerViewRecipesListFavorite
         val layoutManager = GridLayoutManager(context, 1)
         recycler.layoutManager = layoutManager
-        recipesAdapter = RecipesListAdapter(object : RecipesListAdapter.OnRecipeClickListener {
-            override fun onRecipeClick(item: Recipe) {
-                recipesViewModel.openDetailRecipeFragment(item)
-            }
-
-            override fun onCheckBoxClick(item: Recipe, isChecked: Boolean) {
-                if (isChecked) {
-                    item.checked = 1
-                } else {
-                    item.checked = 0
+        recipesAdapter =
+            FavoriteRecipesListAdapter(object : FavoriteRecipesListAdapter.OnRecipeClickListener {
+                override fun onRecipeClick(item: Recipe) {
+                    favoriteRecipesViewModel.openDetailRecipeFragment(item)
                 }
-                recipesViewModel.insertRecipeinDB(item)
-            }
-        })
+
+                override fun onCheckBoxClick(item: Recipe, isChecked: Boolean) {
+                    favoriteRecipesViewModel.deleteFromFavorite(item.id)
+                }
+            })
         recycler.adapter = recipesAdapter
     }
+
 }

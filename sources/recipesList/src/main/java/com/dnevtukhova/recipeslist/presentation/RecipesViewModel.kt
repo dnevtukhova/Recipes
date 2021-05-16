@@ -9,6 +9,7 @@ import com.dnevtukhova.core_api.dto.Recipe
 import com.dnevtukhova.core_api.mediators.RecipeDetailsMediator
 import com.dnevtukhova.recipeslist.R
 import com.dnevtukhova.recipeslist.domain.RecipesInteractor
+import com.dnevtukhova.recipeslist.domain.State
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
@@ -41,15 +42,15 @@ class RecipesViewModel @Inject constructor(private val interactor: RecipesIntera
 
         viewModelScope.launch(Dispatchers.IO) {
             interactor.getPopularRecipesList().onEach{ result ->
-                if(result is com.dnevtukhova.recipeslist.domain.State.Loading) {
+                if(result is State.Loading) {
                     progressLiveData.postValue(true)
                 }
-                if (result is com.dnevtukhova.recipeslist.domain.State.Success) {
+                if (result is State.Success) {
                     Log.d(TAG, result.data.toString())
                     progressLiveData.postValue(false)
                     popularRecipesListLiveData.postValue(result.data)
                 }
-                if (result is com.dnevtukhova.recipeslist.domain.State.Error) {
+                if (result is State.Error) {
                     errorLiveData.postValue(R.string.error)
                     Log.d(TAG, result.error.stackTraceToString())
                 }
@@ -58,6 +59,11 @@ class RecipesViewModel @Inject constructor(private val interactor: RecipesIntera
     }
     fun openDetailRecipeFragment(recipe: Recipe) {
         router.navigateTo(recipeDetailsMediator.startRecipeDetailsFragment(recipe))
+    }
+    fun insertRecipeinDB(recipe: Recipe) {
+        viewModelScope.launch(Dispatchers.IO) {
+            interactor.insertRecipeInDB(recipe)
+        }
     }
 
 }

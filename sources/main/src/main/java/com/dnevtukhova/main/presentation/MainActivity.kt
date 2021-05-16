@@ -2,8 +2,6 @@ package com.dnevtukhova.main.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentActivity
 import com.dnevtukhova.core_api.AppWithFacade
 import com.dnevtukhova.core_api.mediators.PreloaderMediator
 import com.dnevtukhova.core_api.mediators.RecipesListMediator
@@ -14,8 +12,6 @@ import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -62,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                     router.newRootScreen(recipesListMediator.startRecipeListFragment())
                 }
                 R.id.recipes_favorite -> {
-                    router.newRootScreen(preloaderMediator.startPreloaderFragment())
+                    router.newRootScreen(preloaderMediator.startFavoriteRecipesFragment())
                 }
                 R.id.recipes_categories -> {
                     router.newRootScreen(recipesListMediator.startRecipeListFragment())
