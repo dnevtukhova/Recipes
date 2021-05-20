@@ -6,6 +6,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Recipe (
+    @SerializedName("id") val id: Long,
     @SerializedName("title") val title: String,
     @SerializedName("readyInMinutes") val readyInMinutes: String,
     @SerializedName("image") val image: String,

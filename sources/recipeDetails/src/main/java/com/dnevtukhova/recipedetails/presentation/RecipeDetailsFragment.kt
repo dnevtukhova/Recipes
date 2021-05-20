@@ -4,12 +4,15 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.dnevtukhova.core_api.AppWithFacade
 import com.dnevtukhova.core_api.dto.Recipe
 import com.dnevtukhova.recipedetails.R
 import com.dnevtukhova.recipedetails.databinding.RecipeDetailsFragmentBinding
 import com.dnevtukhova.recipedetails.di.RecipeDetailsComponent
+import javax.inject.Inject
 
 
 class RecipeDetailsFragment : Fragment() {
@@ -25,7 +28,16 @@ class RecipeDetailsFragment : Fragment() {
         }
     }
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val recipesViewModel: RecipeDetailsViewModel
+            by viewModels {
+                viewModelFactory
+            }
+
     private lateinit var binding: RecipeDetailsFragmentBinding
+    private lateinit var recipe: Recipe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +59,7 @@ class RecipeDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val bundle = arguments
-        val recipe: Recipe? = bundle!!.getParcelable(EXTRA_RESULT_KEY_RECIPE_DETAILS)
+        recipe = bundle!!.getParcelable(EXTRA_RESULT_KEY_RECIPE_DETAILS)!!
         binding.title.text = recipe!!.title
         binding.readyInMinutesText.text = recipe.readyInMinutes + " min"
         binding.servingsText.text = recipe.servings + " servings"
@@ -55,16 +67,21 @@ class RecipeDetailsFragment : Fragment() {
 
         Glide.with(binding.imageRecipe.context)
             .load(recipe.image)
-            // .transform(CircleTransform())
             .centerCrop()
             .circleCrop()
-
-            //  .transform(CircleT)
-
             .into(binding.imageRecipe)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.recipe_details_menu, menu)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+           R.id.pie_chart -> recipesViewModel.openBarChartFragment(recipe.id)
+
+        }
+        return  super.onOptionsItemSelected(item)
+    }
+
 }

@@ -25,12 +25,12 @@ class RecipesViewModel @Inject constructor(private val interactor: RecipesIntera
         getPopularRecipesList()
     }
 
-    private val popularRecipesListLiveData = MutableLiveData<List<com.dnevtukhova.core_api.dto.Recipe>>()
+    private val popularRecipesListLiveData = MutableLiveData<List<Recipe>>()
     private val errorLiveData = MutableLiveData<Int>()
     private val progressLiveData = MutableLiveData<Boolean>()
 
 
-    val recipesList: LiveData<List<com.dnevtukhova.core_api.dto.Recipe>>
+    val recipesList: LiveData<List<Recipe>>
         get() = popularRecipesListLiveData
     val error: LiveData<Int>
         get() = errorLiveData

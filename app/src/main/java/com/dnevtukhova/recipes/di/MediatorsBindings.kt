@@ -1,5 +1,7 @@
 package com.dnevtukhova.recipes.di
 
+import com.dnevtukhova.barchart.navigation.BarChartMediatorImpl
+import com.dnevtukhova.core_api.mediators.BarChartMediator
 import com.dnevtukhova.core_api.mediators.RecipeDetailsMediator
 import com.dnevtukhova.core_api.mediators.RecipesListMediator
 import com.dnevtukhova.core_api.mediators.MainMediator
@@ -23,4 +25,8 @@ interface MediatorsBindings {
     @Binds
     @Reusable
     fun bindsRecipeDetailsMediator(recipeDetailsMediatorImpl: RecipeDetailsMediatorImpl): RecipeDetailsMediator
+
+    @Binds
+    @Reusable
+    fun bindsBarChartMediator(barChartMediatorImpl: BarChartMediatorImpl): BarChartMediator
 }
