@@ -15,8 +15,7 @@ pipeline {
       }
       stage('build') {
           steps {
-              sh "./gradlew clean assemble --no-daemon
-"
+              sh "./gradlew clean assemble --no-daemon"
           }
       }
   }
