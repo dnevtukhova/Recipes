@@ -62,4 +62,5 @@ dependencies {
     implementation project(':sources:main')
     implementation project(':sources:recipeDetails')
     implementation project(':sources:recipesList')
+    implementation project(':sources:barChart')
 }

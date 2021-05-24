@@ -5,8 +5,8 @@ import com.dnevtukhova.recipedetails.presentation.RecipeDetailsFragment
 import dagger.Component
 
 @Component(
-    dependencies = [ProvidersFacade::class
-        ]
+    dependencies = [ProvidersFacade::class],
+    modules = [RecipeDetailsModule::class]
 )
 @com.dnevtukhova.core_api.ActivityScope
 interface RecipeDetailsComponent {
