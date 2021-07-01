@@ -1,4 +1,4 @@
-package com.dnevtukhova.recipeslist.presentation
+ package com.dnevtukhova.recipeslist.presentation
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class RecipesViewModel @Inject constructor(private val interactor: RecipesInteractor, private val router: Router, private val recipeDetailsMediator: RecipeDetailsMediator) : ViewModel() {
+class  RecipesViewModel @Inject constructor(private val interactor: RecipesInteractor, private val router: Router, private val recipeDetailsMediator: RecipeDetailsMediator) : ViewModel() {
     companion object {
         const val TAG = "RecipesViewModel"
     }

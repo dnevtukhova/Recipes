@@ -6,6 +6,8 @@ import com.dnevtukhova.recipeslist.presentation.RecipesListViewModelFactory
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
 
 
@@ -20,6 +22,10 @@ abstract class RecipesModule {
             return retrofit
                 .create(ServerApi::class.java)
         }
+        @JvmStatic
+        @Provides
+        @com.dnevtukhova.core_api.ActivityScope
+        fun provideCoroutineDispatcher(): CoroutineDispatcher = Dispatchers.Default
     }
 
     @Binds
