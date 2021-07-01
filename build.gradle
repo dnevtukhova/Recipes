@@ -37,4 +37,10 @@ ext {
     lottieVersion = "3.7.0"
     constraint_layout_version = "2.0.4"
     room_version = "2.2.5"
+    mockito_kotlin_version = "3.2.0"
+    kotlinx_coroutine_test = "1.5.0"
+    kluent_version = "1.65"
+    mockk_version = "1.11.0"
+    arch_core_testing_version = "2.1.0"
+
 }
