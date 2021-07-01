@@ -1,4 +1,4 @@
-package com.dnevtukhova.preloader
+package com.dnevtukhova.favoriteRecipes
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.dnevtukhova.recipeslist.domain
+package com.dnevtukhova.favoriteRecipes.domain
 
 import com.dnevtukhova.core_api.dto.Recipe
 

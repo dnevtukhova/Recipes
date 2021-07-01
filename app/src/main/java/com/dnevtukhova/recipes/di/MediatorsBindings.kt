@@ -3,7 +3,7 @@ package com.dnevtukhova.recipes.di
 import com.dnevtukhova.barchart.navigation.BarChartMediatorImpl
 import com.dnevtukhova.core_api.mediators.*
 import com.dnevtukhova.main.naavigation.MainMediatorImpl
-import com.dnevtukhova.preloader.navigation.PreloaderMediatorImpl
+import com.dnevtukhova.favoriteRecipes.navigation.FavoriteRecipesMediatorImpl
 import com.dnevtukhova.recipedetails.navigation.RecipeDetailsMediatorImpl
 import com.dnevtukhova.recipeslist.navigation.RecipesListMediatorImpl
 import dagger.Binds
@@ -30,5 +30,5 @@ interface MediatorsBindings {
 
     @Binds
     @Reusable
-    fun bindPreloaderMediator(preloaderMediatorImpl: PreloaderMediatorImpl): PreloaderMediator
+    fun bindPreloaderMediator(preloaderMediatorImpl: FavoriteRecipesMediatorImpl): PreloaderMediator
 }

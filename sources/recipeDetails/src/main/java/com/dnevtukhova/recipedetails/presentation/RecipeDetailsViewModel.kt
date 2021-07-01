@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.dnevtukhova.core_api.dto.Ingredients
 import com.dnevtukhova.core_api.dto.Instruction
 import com.dnevtukhova.core_api.dto.Instructions
+import com.dnevtukhova.core_api.dto.Recipe
 import com.dnevtukhova.core_api.mediators.BarChartMediator
 import com.dnevtukhova.recipedetails.R
 import com.dnevtukhova.recipedetails.domain.RecipeDetailsInteractor
@@ -122,5 +123,11 @@ class RecipeDetailsViewModel @Inject constructor(
 
     fun openBarChartFragment(recipeId: Long) {
         router.navigateTo(barChartMediator.startBarChartFragment(idRecipe = recipeId))
+    }
+
+    fun insertRecipeinDB(recipe: Recipe) {
+        viewModelScope.launch(Dispatchers.IO) {
+            interactor.insertRecipeInDB(recipe)
+        }
     }
 }

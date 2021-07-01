@@ -1,12 +1,14 @@
 package com.dnevtukhova.recipedetails.domain
 
+import com.dnevtukhova.core_api.database.RecipesDao
+import com.dnevtukhova.core_api.dto.Recipe
 import com.dnevtukhova.core_api.network.NetworkConstants
 import com.dnevtukhova.core_api.network.ServerApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-class RecipeDetailsInteractor @Inject constructor(private val api: ServerApi) {
+class RecipeDetailsInteractor @Inject constructor(private val api: ServerApi, private val dao: RecipesDao) {
     suspend fun getRecipesNutritionWidget(recipeId: Long) = flow {
         emit(api.getRecipesNutritionWidget(apiKey = NetworkConstants.API_KEY, id = recipeId))
     }
@@ -33,5 +35,9 @@ class RecipeDetailsInteractor @Inject constructor(private val api: ServerApi) {
         .onStart<StateLoadInstructions> { emit(StateLoadInstructions.Loading) }
         .catch { ex -> emit(StateLoadInstructions.Error(ex)) }
         .flowOn(Dispatchers.Default)
+
+    suspend fun insertRecipeInDB(recipe: Recipe) {
+        dao.createRecipe(recipe)
+    }
 
 }
