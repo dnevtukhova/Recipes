@@ -5,4 +5,5 @@ interface MediatorsProvider {
     fun provideFilmsListMediator(): RecipesListMediator
     fun provideFilmsDetailsMediator(): RecipeDetailsMediator
     fun provideBarChartMediator(): BarChartMediator
+    fun providePreloaderMediator(): PreloaderMediator
 }

@@ -3,6 +3,7 @@ package com.dnevtukhova.recipeslist.presentation
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -17,9 +18,9 @@ class RecipesListAdapter(
     RecyclerView.Adapter<RecipesViewHolder>() {
     private val items = ArrayList<com.dnevtukhova.core_api.dto.Recipe>()
 
-    fun setItems(stores: List<com.dnevtukhova.core_api.dto.Recipe>) {
+    fun setItems(recipes: List<com.dnevtukhova.core_api.dto.Recipe>) {
         items.clear()
-        items.addAll(stores)
+        items.addAll(recipes)
         notifyDataSetChanged()
     }
 
@@ -31,7 +32,7 @@ class RecipesListAdapter(
         val item = items[position]
         holder.itemView.setOnClickListener { listener.onRecipeClick(item) }
         holder.bind(item)
-
+        holder.itemView.animation = AnimationUtils.loadAnimation(holder.itemView.context, R.anim.animation)
     }
 
     override fun getItemCount(): Int = items.size

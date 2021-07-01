@@ -1,7 +1,6 @@
 package com.dnevtukhova.core_api.network
 
-import com.dnevtukhova.core_api.dto.NutritionWidget
-import com.dnevtukhova.core_api.dto.RecipesList
+import com.dnevtukhova.core_api.dto.*
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -18,4 +17,16 @@ interface ServerApi {
         @Path("id") id: Long,
         @Query("apiKey") apiKey: String
     ): NutritionWidget
+
+    @GET("/recipes/{id}/ingredientWidget.json")
+    suspend fun getIngredients(
+        @Path("id") id: Long,
+        @Query("apiKey") apiKey: String
+    ):Ingredients
+
+    @GET("/recipes/{id}/analyzedInstructions")
+    suspend fun getStepsOfCooking(
+        @Path("id") id: Long,
+        @Query("apiKey") apiKey: String
+    ): List<Instruction>
 }

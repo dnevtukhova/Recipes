@@ -44,7 +44,7 @@ class AllRecipesListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         AllRecipesComponent.create((requireActivity().application as AppWithFacade).getFacade())
             .inject(this)
-
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -67,11 +67,11 @@ class AllRecipesListFragment : Fragment() {
             Toast.makeText(context, getString(error), Toast.LENGTH_LONG).show()
         }
         recipesViewModel.progress.observe(this.viewLifecycleOwner) {
-            if (binding.progressAllRecipes != null) {
+            if (binding.progressAnimationView != null) {
                 if (it) {
-                    binding.progressAllRecipes.isVisible = true
+                    binding.progressAnimationView.isVisible = true
                 } else {
-                    binding.progressAllRecipes.isGone = true
+                    binding.progressAnimationView.isGone = true
                 }
             }
         }

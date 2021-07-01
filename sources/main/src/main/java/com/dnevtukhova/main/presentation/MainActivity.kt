@@ -2,15 +2,20 @@ package com.dnevtukhova.main.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import com.dnevtukhova.core_api.AppWithFacade
+import com.dnevtukhova.core_api.mediators.PreloaderMediator
 import com.dnevtukhova.core_api.mediators.RecipesListMediator
 import com.dnevtukhova.main.R
 import com.dnevtukhova.main.di.MainComponent
-
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +26,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var router: Router
 
     @Inject
-    lateinit var filmsListMediator: RecipesListMediator
+    lateinit var preloaderMediator: PreloaderMediator
+
+    @Inject
+    lateinit var recipesListMediator: RecipesListMediator
 
     private val navigator: Navigator = AppNavigator(this, R.id.fragmentContainer)
 
@@ -29,9 +37,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-      //  MainComponent.injectActivity(this)
         MainComponent.create((application as AppWithFacade).getFacade()).inject(this)
-     router.replaceScreen(filmsListMediator.startRecipeListFragment())
+        router.replaceScreen(recipesListMediator.startRecipeListFragment())
+
+        setBottomNavigation()
 
     }
 
@@ -43,5 +52,23 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         navigatorHolder.removeNavigator()
         super.onPause()
+    }
+
+    private fun setBottomNavigation() {
+        val bar: BottomNavigationView = findViewById(R.id.bottomNavigation)
+        bar.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.all_recipes -> {
+                    router.newRootScreen(recipesListMediator.startRecipeListFragment())
+                }
+                R.id.recipes_favorite -> {
+                    router.newRootScreen(preloaderMediator.startPreloaderFragment())
+                }
+                R.id.recipes_categories -> {
+                    router.newRootScreen(recipesListMediator.startRecipeListFragment())
+                }
+            }
+            true
+        }
     }
 }
