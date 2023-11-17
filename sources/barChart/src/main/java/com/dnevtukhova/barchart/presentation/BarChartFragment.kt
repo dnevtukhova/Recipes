@@ -10,17 +10,22 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.dnevtukhova.barchart.R
 import com.dnevtukhova.barchart.databinding.BarChartFragmentBinding
 import com.dnevtukhova.barchart.di.BarChartComponent
+import com.dnevtukhova.barchart.domain.State
+import com.dnevtukhova.barchart.domain.model.BarChartModel
+import com.dnevtukhova.barchart.domain.model.NutritionItem
 import com.dnevtukhova.core_api.AppWithFacade
-import com.dnevtukhova.core_api.dto.NutritionItem
-import com.dnevtukhova.core_api.dto.NutritionWidget
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class BarChartFragment : Fragment() {
@@ -58,7 +63,7 @@ class BarChartFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = BarChartFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -66,7 +71,7 @@ class BarChartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val bundle = arguments
-        val recipeId = bundle!!.getLong(EXTRA_RESULT_KEY_BAR_CHART)!!
+        val recipeId = bundle!!.getLong(EXTRA_RESULT_KEY_BAR_CHART)
         barChartViewModel.getNutritionWidget(recipeId = recipeId)
         initObservers()
 
@@ -74,31 +79,33 @@ class BarChartFragment : Fragment() {
     }
 
     private fun initObservers() {
-        barChartViewModel.nutritionWidget.observe(this.viewLifecycleOwner) {
-            initBarChart(it)
-            initFlowLayout(it)
-        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                barChartViewModel.nutritionWidgetStateFlow.collect { state ->
+                    when (state) {
+                        is State.Error -> {
+                            binding.progressBarChart.isVisible = false
+                            Toast.makeText(context, state.error.toString(), Toast.LENGTH_LONG)
+                                .show()
+                        }
 
-        barChartViewModel.progress.observe(this.viewLifecycleOwner) {
-            if (binding.progressBarChart!= null) {
-                if (it) {
-                    binding.progressBarChart.isVisible = true
-                } else {
-                    binding.progressBarChart.isGone = true
+                        is State.Loading -> binding.progressBarChart.isVisible = true
+                        is State.Success -> {
+                            binding.progressBarChart.isVisible = false
+                            initBarChart(state.data)
+                            initFlowLayout(state.data)
+                        }
+                    }
                 }
             }
-        }
-
-        barChartViewModel.error.observe(this.viewLifecycleOwner) {error ->
-            Toast.makeText(context, getString(error), Toast.LENGTH_LONG).show()
         }
     }
 
     @SuppressLint("ResourceAsColor", "SetTextI18n")
-    private fun initBarChart(nutritionWidget: NutritionWidget) {
+    private fun initBarChart(barChartModel: BarChartModel) {
         val items = mutableListOf<NutritionItem>()
-        items.addAll(nutritionWidget.bad)
-        items.addAll(nutritionWidget.good)
+        items.addAll(barChartModel.bad)
+        items.addAll(barChartModel.good)
 
         val defaultPaddingH = 2
         val defaultPaddingV = 5
@@ -124,10 +131,10 @@ class BarChartFragment : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun initFlowLayout(nutritionWidget: NutritionWidget) {
-        binding.calories.text = "${nutritionWidget.calories} ${getText(R.string.calories)}"
-        binding.protein.text = "${getText(R.string.protein)} ${nutritionWidget.protein}"
-        binding.totalFat.text = "${getText(R.string.total_fat)} ${nutritionWidget.fat}"
-        binding.carbs.text = "${getText(R.string.carbs)} ${nutritionWidget.carbs}"
+    private fun initFlowLayout(barChartModel: BarChartModel) {
+        binding.calories.text = "${barChartModel.calories} ${getText(R.string.calories)}"
+        binding.protein.text = "${getText(R.string.protein)} ${barChartModel.protein}"
+        binding.totalFat.text = "${getText(R.string.total_fat)} ${barChartModel.fat}"
+        binding.carbs.text = "${getText(R.string.carbs)} ${barChartModel.carbs}"
     }
 }

@@ -1,10 +1,9 @@
 package com.dnevtukhova.barchart.domain
 
-import com.dnevtukhova.core_api.dto.NutritionWidget
+import com.dnevtukhova.barchart.domain.model.BarChartModel
 
-sealed class
-State {
-    object Loading: State()
-    data class Success(val data: NutritionWidget) : State()
+sealed class State {
+    object Loading : State()
+    data class Success(val data: BarChartModel) : State()
     data class Error(val error: Throwable) : State()
 }

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class NutritionItem (
+data class NutritionItemDto (
     @SerializedName("title") val title: String,
     @SerializedName("amount") val amount: String,
     @SerializedName("indented") val indented: Boolean,

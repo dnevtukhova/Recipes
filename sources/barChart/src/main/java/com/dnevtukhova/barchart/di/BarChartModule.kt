@@ -1,6 +1,11 @@
 package com.dnevtukhova.barchart.di
 
 import androidx.lifecycle.ViewModelProvider
+import com.dnevtukhova.barchart.data.converter.BarChartConverter
+import com.dnevtukhova.barchart.data.converter.NutritionItemConverter
+import com.dnevtukhova.barchart.data.repository.BarChartRepositoryImpl
+import com.dnevtukhova.barchart.domain.BarChartRepository
+import com.dnevtukhova.barchart.domain.usecase.GetNutritionWidgetDataUseCase
 import com.dnevtukhova.barchart.presentation.BarChartViewModelFactory
 import com.dnevtukhova.core_api.network.ServerApi
 import dagger.Binds
@@ -18,6 +23,22 @@ abstract class BarChartModule {
             return retrofit
                 .create(ServerApi::class.java)
         }
+
+        @JvmStatic
+        @Provides
+        @com.dnevtukhova.core_api.ActivityScope
+        fun providesBarChartRepository(serverApi: ServerApi): BarChartRepository =
+            BarChartRepositoryImpl(
+                serverApi, BarChartConverter(
+                    NutritionItemConverter()
+                )
+            )
+
+        @JvmStatic
+        @Provides
+        @com.dnevtukhova.core_api.ActivityScope
+        fun provideBarChartUseCase(repository: BarChartRepository): GetNutritionWidgetDataUseCase =
+            GetNutritionWidgetDataUseCase(repository)
     }
 
     @Binds
