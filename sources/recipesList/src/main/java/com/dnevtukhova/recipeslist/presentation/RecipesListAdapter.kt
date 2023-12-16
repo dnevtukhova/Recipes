@@ -10,17 +10,15 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dnevtukhova.core_api.dto.Recipe
-
 import com.dnevtukhova.recipeslist.R
-import java.util.*
 
 class RecipesListAdapter(
     private val listener: OnRecipeClickListener
 ) :
     RecyclerView.Adapter<RecipesViewHolder>() {
-    private val items = ArrayList<com.dnevtukhova.core_api.dto.Recipe>()
+    private val items = ArrayList<Recipe>()
 
-    fun setItems(recipes: List<com.dnevtukhova.core_api.dto.Recipe>) {
+    fun setItems(recipes: List<Recipe>) {
         items.clear()
         items.addAll(recipes)
         notifyDataSetChanged()
@@ -35,9 +33,9 @@ class RecipesListAdapter(
     override fun onBindViewHolder(holder: RecipesViewHolder, position: Int) {
         val item = items[position]
         holder.itemView.setOnClickListener { listener.onRecipeClick(item) }
-       val checkBox =  holder.itemView.findViewById<CheckBox>(R.id.checkBoxImageView)
+        val checkBox = holder.itemView.findViewById<CheckBox>(R.id.checkBoxImageView)
 
-            checkBox.setOnClickListener { listener.onCheckBoxClick(item, checkBox.isChecked) }
+        checkBox.setOnClickListener { listener.onCheckBoxClick(item, checkBox.isChecked) }
         holder.bind(item)
         holder.itemView.animation =
             AnimationUtils.loadAnimation(holder.itemView.context, R.anim.animation)

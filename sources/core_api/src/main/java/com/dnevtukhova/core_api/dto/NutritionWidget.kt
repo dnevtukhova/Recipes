@@ -2,7 +2,7 @@ package com.dnevtukhova.core_api.dto
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class NutritionWidget(
@@ -10,6 +10,6 @@ class NutritionWidget(
     @SerializedName("carbs") val carbs: String,
     @SerializedName("fat") val fat: String,
     @SerializedName("protein") val protein: String,
-    @SerializedName("bad") val bad: List<NutritionItem>,
-    @SerializedName("good") val good: List<NutritionItem>
+    @SerializedName("bad") val bad: List<NutritionItemDto>,
+    @SerializedName("good") val good: List<NutritionItemDto>
 ) : Parcelable

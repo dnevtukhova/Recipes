@@ -2,7 +2,6 @@ package com.dnevtukhova.recipedetails.domain
 
 import com.dnevtukhova.core_api.dto.Ingredients
 import com.dnevtukhova.core_api.dto.Instruction
-import com.dnevtukhova.core_api.dto.Instructions
 import com.dnevtukhova.core_api.dto.NutritionWidget
 
 sealed class

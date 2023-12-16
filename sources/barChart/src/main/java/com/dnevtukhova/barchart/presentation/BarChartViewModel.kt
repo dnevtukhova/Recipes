@@ -1,54 +1,35 @@
 package com.dnevtukhova.barchart.presentation
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dnevtukhova.barchart.R
-import com.dnevtukhova.barchart.domain.BarChartInteractor
+import com.dnevtukhova.barchart.data.repository.BarChartRepositoryImpl
+import com.dnevtukhova.barchart.domain.BarChartRepository
 import com.dnevtukhova.barchart.domain.State
-import com.dnevtukhova.core_api.dto.NutritionWidget
-import kotlinx.coroutines.Dispatchers
+import com.dnevtukhova.barchart.domain.usecase.GetNutritionWidgetDataUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class BarChartViewModel @Inject constructor(private val interactor: BarChartInteractor) :
+class BarChartViewModel @Inject constructor(private val getNutritionWidgetDataUseCase: GetNutritionWidgetDataUseCase) :
     ViewModel() {
 
     companion object {
         const val TAG = "BarChartViewModel"
     }
 
-    private val nutritionWidgetLiveData = MutableLiveData<NutritionWidget>()
-    private val progressLiveData = MutableLiveData<Boolean>()
-    private val errorLiveData = MutableLiveData<Int>()
+    private val _nutritionWidgetStateFlow = MutableStateFlow<State>(State.Loading)
 
-    val nutritionWidget: LiveData<NutritionWidget>
-        get() = nutritionWidgetLiveData
-    val progress: LiveData<Boolean>
-        get() = progressLiveData
-    val error: LiveData<Int>
-        get() = errorLiveData
+    val nutritionWidgetStateFlow = _nutritionWidgetStateFlow.asStateFlow()
 
     fun getNutritionWidget(recipeId: Long) {
-        viewModelScope.launch(Dispatchers.IO) {
-            interactor.getRecipesNutritionWidget(recipeId).onEach { result ->
-                if (result is State.Loading) {
-                    progressLiveData.postValue(true)
-                }
-                if (result is State.Success) {
-                    Log.d(TAG, result.data.toString())
-                    progressLiveData.postValue(false)
-                    nutritionWidgetLiveData.postValue(result.data)
-                }
-                if (result is State.Error) {
-                    errorLiveData.postValue(R.string.error)
-                    Log.d(TAG, result.error.stackTraceToString())
-                }
-            }.launchIn(viewModelScope)
-        }
+        getNutritionWidgetDataUseCase(recipeId).onEach { result ->
+            when (result) {
+                is State.Error -> _nutritionWidgetStateFlow.value = State.Error(result.error)
+                is State.Loading -> _nutritionWidgetStateFlow.value = State.Loading
+                is State.Success -> _nutritionWidgetStateFlow.value = State.Success(result.data)
+            }
+        }.launchIn(viewModelScope)
     }
 }
