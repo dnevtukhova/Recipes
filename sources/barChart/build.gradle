@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 34
 
     defaultConfig {
         minSdkVersion 24
@@ -66,4 +66,9 @@ dependencies {
 
     implementation project(':sources:core_api')
     implementation project(':sources:ui_core')
+
+    //test
+    testImplementation 'junit:junit:'
+    androidTestImplementation "androidx.test.ext:junit:$junit_version"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

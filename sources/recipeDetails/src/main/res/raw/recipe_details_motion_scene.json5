@@ -1,0 +1,199 @@
+{
+  ConstraintSets: {
+    start: {
+      title: {
+        width: 'spread',
+        height: 'wrap',
+        end: ['parent', 'end', 20],
+        start: ['parent', 'start', 20],
+        top: ['parent', 'top', 10],
+        scaleX: 1.0,
+        scaleY: 1.0,
+      },
+      image_recipe: {
+        width: 200,
+        height: 200,
+        top: ['title', 'bottom', 10],
+        right: ['parent', 'right', 10],
+      },
+      circle: {
+        width: 60,
+        height: 60,
+        end: ['image_recipe', 'end', 10],
+        bottom: ['image_recipe', 'bottom', 10],
+        alpha: 0.8,
+      },
+      like: {
+        height: 30,
+        width: 30,
+        top: ['circle', 'top', 0],
+        bottom: ['circle', 'bottom', 0],
+        start: ['circle', 'start', 0],
+        end: ['circle', 'end', 0],
+        alpha: 1.0,
+      },
+      image_ready_in_minutes: {
+        width: 20,
+        height: 20,
+        top: ['title', 'bottom', 10],
+        right: ['ready_in_minutes_text', 'left', 10],
+      },
+      ready_in_minutes_text: {
+        width: 'wrap',
+        height: 'wrap',
+        top: ['image_ready_in_minutes', 'top', 10],
+        bottom: ['image_ready_in_minutes', 'bottom', 10],
+        end: ['image_recipe', 'start', 10],
+        left: ['parent', 'left', 10],
+      },
+      image_kcal: {
+        width: 20,
+        height: 20,
+        start: ['image_ready_in_minutes', 'start', 0],
+        top: ['image_ready_in_minutes', 'bottom', 10],
+      },
+      kcal_text: {
+        width: 'wrap',
+        height: 'wrap',
+        top: ['image_kcal', 'top', 10],
+        bottom: ['image_kcal', 'bottom', 10],
+        start: ['ready_in_minutes_text', 'start', 0],
+      },
+      image_servings: {
+        width: 20,
+        height: 20,
+        start: ['image_ready_in_minutes', 'start', 0],
+        top: ['image_kcal', 'bottom', 10],
+      },
+      servings_text: {
+        width: 'wrap',
+        height: 'wrap',
+        bottom: ['image_servings', 'bottom', 10],
+        start: ['ready_in_minutes_text', 'start', 0],
+        top: ['image_servings', 'top', 10],
+      },
+      tab_layout: {
+        width: 'spread',
+        height: 'wrap',
+        left: ['parent', 'left', 0],
+        right: ['parent', 'right', 0],
+        top: ['image_recipe', 'bottom', 10],
+      },
+      tab_content: {
+        width: 'spread',
+        height: 'wrap',
+        right: ['parent', 'right', 10],
+        left: ['parent', 'left', 10],
+        start: ['parent', 'start', 10],
+        end: ['parent', 'end', 10],
+        top: ['tab_layout', 'bottom', 0],
+      }
+    },
+    end: {
+      title: {
+        width: 'spread',
+        height: 'wrap',
+        end: ['image_recipe', 'start', 10],
+        start: ['parent', 'start', 10],
+        top: ['parent', 'top', 10],
+        scaleX: 0.8,
+        scaleY: 0.8,
+        translationY: -20,
+        translationX: -50
+      },
+      image_recipe: {
+        width: 80,
+        height: 80,
+        top: ['parent', 'top', 10],
+        end: ['parent', 'end', 10],
+        right: ['parent', 'right', 10],
+        bottom: ['tab_layout', 'top', 10],
+      },
+      image_ready_in_minutes: {
+        width: 20,
+        height: 20,
+        top: ['title', 'bottom', 10],
+        right: ['ready_in_minutes_text', 'left', 10],
+        alpha: 0.0,
+      },
+      ready_in_minutes_text: {
+        width: 'spread',
+        height: 'wrap',
+        top: ['title', 'bottom', 10],
+        start: ['parent', 'start', 10],
+      },
+      image_kcal: {
+        width: 20,
+        height: 20,
+        start: ['image_ready_in_minutes', 'start', 10],
+        top: ['image_ready_in_minutes', 'top', 10],
+        bottom: ['image_ready_in_minutes', 'bottom', 10],
+        alpha: 0.0
+      },
+      kcal_text: {
+        width: 'spread',
+        height: 'wrap',
+        top: ['title', 'bottom', 10],
+        start: ['ready_in_minutes_text', 'end', 10],
+      },
+      image_servings: {
+        width: 20,
+        height: 20,
+        start: ['image_kcal', 'end', 10],
+        top: ['image_kcal', 'top', 10],
+        bottom: ['image_kcal', 'bottom', 10],
+        alpha: 0.0
+      },
+      servings_text: {
+        width: 'spread',
+        height: 'wrap',
+        start: ['kcal_text', 'end', 10],
+        top: ['title', 'bottom', 10],
+      },
+      tab_layout: {
+        width: 'spread',
+        height: 'wrap',
+        left: ['parent', 'left', 0],
+        right: ['parent', 'right', 0],
+        top: ['ready_in_minutes_text', 'bottom', 10],
+      },
+      tab_content: {
+        width: 'spread',
+        height: 'wrap',
+        right: ['parent', 'right', 10],
+        left: ['parent', 'left', 10],
+        start: ['parent', 'start', 10],
+        end: ['parent', 'end', 10],
+        top: ['tab_layout', 'bottom', 0],
+      },
+      circle: {
+        width: 30,
+        height: 30,
+        end: ['image_recipe', 'end'],
+        bottom: ['image_recipe', 'bottom'],
+        visibility: 'invisible',
+      },
+      like: {
+        width: 10,
+        height: 10,
+        top: ['circle', 'top'],
+        bottom: ['circle', 'bottom'],
+        start: ['circle', 'start', 0],
+        end: ['circle', 'end', 0],
+        visibility: 'invisible',
+      },
+    },
+  },
+  Transitions: {
+    default: {
+      from: 'start',
+      to: 'end',
+      duration: 1000,
+      onSwipe: {
+        anchor: 'tab_content',
+        direction: 'up',
+        side: 'top',
+      }
+    }
+  }
+}
