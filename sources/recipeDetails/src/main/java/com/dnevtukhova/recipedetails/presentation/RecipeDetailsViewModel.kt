@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dnevtukhova.core_api.dto.Ingredients
 import com.dnevtukhova.core_api.dto.Instruction
-import com.dnevtukhova.core_api.dto.Instructions
 import com.dnevtukhova.core_api.dto.Recipe
 import com.dnevtukhova.core_api.mediators.BarChartMediator
 import com.dnevtukhova.recipedetails.R
@@ -17,6 +16,8 @@ import com.dnevtukhova.recipedetails.domain.StateLoadIngredients
 import com.dnevtukhova.recipedetails.domain.StateLoadInstructions
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -31,6 +32,9 @@ class RecipeDetailsViewModel @Inject constructor(
     companion object {
         const val TAG = "RecipeDetailsViewModel"
     }
+
+    private val _tabIndicatorStateFlow = MutableStateFlow(0)
+    private val _currentRecipeStateFlow: MutableStateFlow<Recipe?> = MutableStateFlow(null)
 
     private val caloriesLiveData = MutableLiveData<String>()
     private val errorLiveData = MutableLiveData<Int>()
@@ -60,6 +64,9 @@ class RecipeDetailsViewModel @Inject constructor(
 
     val stepsCooking: LiveData<Instruction>
     get() = stepsCookingLiveData
+
+    val tabIndicatorStateFlow = _tabIndicatorStateFlow.asStateFlow()
+    val currentRecipeStateFlow = _currentRecipeStateFlow.asStateFlow()
 
     fun getCalories(recipeId: Long) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -125,9 +132,18 @@ class RecipeDetailsViewModel @Inject constructor(
         router.navigateTo(barChartMediator.startBarChartFragment(idRecipe = recipeId))
     }
 
-    fun insertRecipeinDB(recipe: Recipe) {
+    private fun insertRecipeinDB(recipe: Recipe) {
         viewModelScope.launch(Dispatchers.IO) {
             interactor.insertRecipeInDB(recipe)
         }
+    }
+
+    fun onTabIndicatorChange(indicator: Int) {
+        _tabIndicatorStateFlow.value = indicator
+    }
+
+    fun onCurrentRecipeChange(recipe: Recipe) {
+        _currentRecipeStateFlow.value = recipe
+        insertRecipeinDB(recipe)
     }
 }

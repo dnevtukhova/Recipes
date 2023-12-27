@@ -23,7 +23,7 @@ class BarChartRepositoryImpl @Inject constructor(
         emit(api.getRecipesNutritionWidget(apiKey = NetworkConstants.API_KEY, id = recipeId))
     }
         .flowOn(Dispatchers.IO)
-        .map { state -> State.Success(barChartConverter.convert(state)) }
+        .map { nutritionWidget -> State.Success(barChartConverter.convert(nutritionWidget)) }
         .onStart<State> { emit(State.Loading) }
         .catch { ex -> emit(State.Error(ex)) }
 }

@@ -29,6 +29,7 @@ class BarChartViewModel @Inject constructor(private val getNutritionWidgetDataUs
                 is State.Error -> _nutritionWidgetStateFlow.value = State.Error(result.error)
                 is State.Loading -> _nutritionWidgetStateFlow.value = State.Loading
                 is State.Success -> _nutritionWidgetStateFlow.value = State.Success(result.data)
+                else -> {}
             }
         }.launchIn(viewModelScope)
     }
